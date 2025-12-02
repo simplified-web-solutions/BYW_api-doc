@@ -144,6 +144,23 @@ paths:
         '200':
           description: JWT token returned
 
+  /auth/apple-auth:
+    post:
+      tags: [Auth]
+      summary: Apple OAuth authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                identityToken:
+                  type: string
+      responses:
+        '200':
+          description: JWT token returned
+
   /auth/refresh-token:
     post:
       tags: [Auth]
@@ -179,6 +196,16 @@ paths:
       responses:
         '200':
           description: User updated
+
+  /auth/delete-user:
+    delete:
+      tags: [Auth]
+      summary: Delete user account
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User deleted
 
   # WEDDING ENDPOINTS
   /wedding/create:
@@ -304,10 +331,12 @@ paths:
           description: Food information
 
   # DRAWER ENDPOINT
-  /drawer/get:
+  /advices/drawer/get:
     get:
       tags: [Drawer]
       summary: Get drawer content
+      security:
+        - bearerAuth: []
       parameters:
         - name: navigation
           in: query
@@ -365,7 +394,7 @@ paths:
         '200':
           description: Task details
 
-  /task/update:
+  /task/updateTask:
     patch:
       tags: [Task]
       summary: Update task
@@ -406,6 +435,59 @@ paths:
       responses:
         '200':
           description: Predefined tasks
+
+  /tasks/predefined/update:
+    patch:
+      tags: [Task]
+      summary: Update predefined task
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isCompleted:
+                  type: boolean
+      responses:
+        '200':
+          description: Task updated
+
+  /tasks/predefined/getByNavigation:
+    get:
+      tags: [Task]
+      summary: Get predefined tasks by navigation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: navigation
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Predefined tasks
+
+  /subcategory/checkbox/update:
+    patch:
+      tags: [Task]
+      summary: Update subcategory checkbox
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                checked:
+                  type: boolean
+      responses:
+        '200':
+          description: Subcategory updated
 
   # VENUE ENDPOINTS
   /venue/create:
@@ -473,7 +555,7 @@ paths:
         '200':
           description: Venue deleted
 
-  /venue/update:
+  /venue/updateVenue:
     patch:
       tags: [Venue]
       summary: Update venue
@@ -502,15 +584,34 @@ paths:
         '200':
           description: Venue updated
 
-  /venue/items/update:
+  /venue/item/update:
     patch:
       tags: [Venue]
-      summary: Update venue items
+      summary: Update venue item
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Venue item updated
+
+  /venue/item/get:
+    get:
+      tags: [Venue]
+      summary: Get venue items
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: Venue items updated
+          description: List of venue items
 
   # DRESS ENDPOINTS
   /dress/create:
@@ -759,6 +860,24 @@ paths:
         '200':
           description: Attire details
 
+  /attire/update:
+    patch:
+      tags: [Attire]
+      summary: Update attire section
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dresses:
+      responses:
+        '200':
+          description: Attire updated
+
   # ALTERATIONS
   /alteration/get:
     post:
@@ -825,6 +944,32 @@ paths:
         '200':
           description: Item updated
 
+  /alteration/item/get:
+    get:
+      tags: [Alterations]
+      summary: Get alteration items
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of alteration items
+
+  /alteration/item/delete:
+    delete:
+      tags: [Alterations]
+      summary: Delete alteration item
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Item deleted
+
   /alteration/update:
     patch:
       tags: [Alterations]
@@ -853,40 +998,15 @@ paths:
           description: Alteration updated
 
   # FLORAL & DECOR
-  /floral-decor/get:
-    post:
+  /florist/get:
+    get:
       tags: [Floral & Decor]
-      summary: Get or create floral decor
+      summary: Get florist items
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: Floral decor
-
-  /floral-decor/update:
-    patch:
-      tags: [Floral & Decor]
-      summary: Update floral decor
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: query
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                designFloralsDecor:
-                  type: boolean
-      responses:
-        '200':
-          description: Updated
+          description: List of florist items
 
   /florist/create:
     post:
@@ -999,6 +1119,24 @@ paths:
         '200':
           description: Attires
 
+  /attire/other/update:
+    patch:
+      tags: [Children And Others]
+      summary: Update other attires
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                childrenDresses:
+      responses:
+        '200':
+          description: Updated
+
   # GUEST AND SEATING
   /guest/get:
     post:
@@ -1038,20 +1176,10 @@ paths:
           description: Updated
 
   # COMMUNICATION
-  /coomunication/get:
-    post:
-      tags: [Communication]
-      summary: Get or create communication
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Communication
-
-  /communication/update:
+  /notes/update:
     patch:
       tags: [Communication]
-      summary: Update communication
+      summary: Update notes
       security:
         - bearerAuth: []
       requestBody:
@@ -1061,50 +1189,22 @@ paths:
             schema:
               type: object
               properties:
-                websiteCreated:
-                  type: boolean
-                websiteLinkShared:
-                  type: boolean
-                weddingRegistrySetup:
-                  type: boolean
-                createdHardcopy:
-                  type: boolean
-                receivedHardcopy:
-                  type: boolean
-                sentHardcopy:
-                  type: boolean
-                createdDigitalInvitaion:
-                  type: boolean
-                sentDigitalInvitation:
-                  type: boolean
-                createdPrograms:
-                  type: boolean
-                receivedPrograms:
-                  type: boolean
+                notes:
+                  type: string
       responses:
         '200':
           description: Updated
 
   # MUSIC AND SOUND
-  /music-and-other/get:
-    post:
-      tags: [Music And Sound]
-      summary: Get or create music and other
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Music and other
-
   /music/get:
-    post:
+    get:
       tags: [Music And Sound]
-      summary: Get or create music
+      summary: Get music playlists
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: Music
+          description: Music playlists
 
   /music/update:
     patch:
@@ -1305,10 +1405,16 @@ paths:
   /media/photographer/delete:
     delete:
       tags: [Photographer and Videographer]
-      summary: Delete photographer
+      summary: Delete photographer or videographer
       security:
         - bearerAuth: []
       parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [photographer, videographer]
         - name: id
           in: query
           required: true
@@ -1321,10 +1427,16 @@ paths:
   /media/photographer/pick:
     patch:
       tags: [Photographer and Videographer]
-      summary: Pick photographer
+      summary: Pick photographer or videographer
       security:
         - bearerAuth: []
       parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [photographer, videographer]
         - name: id
           in: query
           required: true
@@ -1512,22 +1624,6 @@ paths:
         '200':
           description: Deleted
 
-  /meal/menu/delete:
-    delete:
-      tags: [Food]
-      summary: Delete meal menu
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: query
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Deleted
-
   # PAYMENT
   /payment/google/make:
     post:
@@ -1581,35 +1677,15 @@ paths:
         '200':
           description: Payment info
 
-  # WEDDING WEEK
-  /wedding-week/get:
-    post:
-      tags: [Wedding Week]
-      summary: Get or create wedding week
+  /payment/status:
+    get:
+      tags: [Payment]
+      summary: Get payment status
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: Wedding week
-
-  /wedding-week/update:
-    patch:
-      tags: [Wedding Week]
-      summary: Update wedding week
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                notes:
-                  type: string
-      responses:
-        '200':
-          description: Updated
+          description: Payment status
 
   # ODDS AND ENDS
   /odds-and-ends/get:

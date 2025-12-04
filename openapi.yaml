@@ -246,7 +246,7 @@ paths:
         '200':
           description: Wedding details
 
-  /wedding/updateWedding:
+  /wedding/update:
     patch:
       tags: [Wedding]
       summary: Update wedding
@@ -268,16 +268,6 @@ paths:
       responses:
         '200':
           description: Wedding updated
-
-  /wedding/attire:
-    get:
-      tags: [Wedding]
-      summary: Get wedding attire info
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Attire information
 
   /wedding/budget:
     get:
@@ -319,16 +309,6 @@ paths:
       responses:
         '200':
           description: Budget updated
-
-  /wedding/food:
-    get:
-      tags: [Wedding]
-      summary: Get wedding food info
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Food information
 
   # DRAWER ENDPOINT
   /advices/drawer/get:
@@ -1278,25 +1258,6 @@ paths:
         '200':
           description: Updated
 
-  /music-and-other/update:
-    patch:
-      tags: [Music And Sound]
-      summary: Update music and other
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                notes:
-                  type: string
-      responses:
-        '200':
-          description: Updated
-
   /others/get:
     get:
       tags: [Music And Sound]
@@ -1308,37 +1269,6 @@ paths:
           description: Others
 
   # PHOTOGRAPHER AND VIDEOGRAPHER
-  /media/get:
-    post:
-      tags: [Photographer and Videographer]
-      summary: Get or create media section
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Media section
-
-  /media/update:
-    patch:
-      tags: [Photographer and Videographer]
-      summary: Update media section
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                areSame:
-                  type: boolean
-                notes:
-                  type: string
-      responses:
-        '200':
-          description: Updated
-
   /media/photographer/create:
     post:
       tags: [Photographer and Videographer]
